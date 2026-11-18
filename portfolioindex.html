@@ -6,7 +6,8 @@
 <title>Samuel Poppen Portfolio</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Samuel Poppen: mechanical engineering at Miami University. Co-founder and CEO of FlexForm Aeronautics, CRAFT Lab researcher, and builder of the Alloy Composition Matcher for Volynt Aero and MAC-Piranha Aero.">
-<script>try{var t=localStorage.getItem('sp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem('sp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}
+document.documentElement.classList.add('js');setTimeout(function(){document.documentElement.classList.add('typed')},5000);</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wdth,wght@75..112.5,300..700&display=swap">
@@ -137,7 +138,19 @@ a{color:inherit}
 .dim.go .arm{animation:draw .7s cubic-bezier(.2,.7,.2,1) both}
 
 h1.name{margin:0;font-family:var(--display);font-stretch:125%;font-weight:820;text-transform:uppercase;font-size:clamp(46px,8.2vw,128px);line-height:.86;letter-spacing:-.005em}
-h1.name span{display:block;width:fit-content}
+h1.name > span{display:block;width:fit-content}
+/* typed-out name: letters keep their space while hidden, so layout and the dimension line never shift */
+.name .ch{position:relative}
+.js .name .ch{visibility:hidden}
+.js .name .ch.on,.typed .name .ch{visibility:visible}
+.name .ch.cur::after,.name .ch.pre::before{content:"";visibility:visible;position:absolute;top:.07em;bottom:.03em;width:.07em;background:var(--red);animation:blink 1s steps(1) infinite}
+.name .ch.cur::after{left:100%;margin-left:.05em}
+.name .ch.pre::before{right:100%;margin-right:.05em}
+.name.typing .ch.cur::after{animation:none}
+@keyframes blink{50%{opacity:0}}
+.js .dim.wait{visibility:hidden}
+.typed .dim.wait{visibility:visible}
+@media (prefers-reduced-motion:reduce){.js .name .ch,.js .dim.wait{visibility:visible}.name .ch.cur::after,.name .ch.pre::before{display:none}}
 .lede{margin:0;font-size:clamp(17px,1.5vw,19px);line-height:1.55;color:var(--ink-2);max-width:58ch}
 .lede strong{color:var(--ink);font-weight:600}
 .cta{display:flex;flex-wrap:wrap;gap:12px}
@@ -444,8 +457,8 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
             <div class="hero-copy">
               <p class="eyebrow">Mechanical engineering · Miami University</p>
               <div class="namebox">
-                <div class="dim" id="dim" aria-hidden="true"><span class="arm l"></span><span class="dim-label" id="dimLabel">X.XXX</span><span class="arm r"></span></div>
-                <h1 class="name" id="name"><span>Samuel</span><span>Poppen</span></h1>
+                <div class="dim wait" id="dim" aria-hidden="true"><span class="arm l"></span><span class="dim-label" id="dimLabel">X.XXX</span><span class="arm r"></span></div>
+                <h1 class="name" id="name" aria-label="Samuel Poppen"><span aria-hidden="true"><span class="ch">S</span><span class="ch">a</span><span class="ch">m</span><span class="ch">u</span><span class="ch">e</span><span class="ch">l</span></span><span aria-hidden="true"><span class="ch">P</span><span class="ch">o</span><span class="ch">p</span><span class="ch">p</span><span class="ch">e</span><span class="ch">n</span></span></h1>
               </div>
               <p class="lede">Presidential Fellow in Miami University's Honors College on an academic full-ride scholarship, studying mechanical engineering with a minor in finance. I co-founded <strong>FlexForm Aeronautics</strong>, research sheet metal forming in the <strong>CRAFT Lab</strong>, and reverse engineer helicopter parts for <strong>MAC-Piranha Aero</strong>.</p>
               <div class="cta">
@@ -994,8 +1007,34 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
   var raf = 0;
   window.addEventListener("resize",function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(measure);});
   measure();
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){measure(); dim.classList.add("go");});
-  else dim.classList.add("go");
+
+  /* ---------- type the name out on load, then draw the dimension line ---------- */
+  var nameEl = $("name"), letters = [].slice.call(nameEl.querySelectorAll(".ch")), started = false;
+  function revealDim(){
+    measure(); dim.classList.remove("wait"); dim.classList.add("go");
+    document.documentElement.classList.add("typed");
+  }
+  function typeName(){
+    if(started) return; started = true;
+    if(reduce || !letters.length){ letters.forEach(function(c){c.classList.add("on");}); revealDim(); return; }
+    letters[0].classList.add("pre");
+    var i = 0;
+    function next(){
+      letters[0].classList.remove("pre");
+      if(i > 0) letters[i-1].classList.remove("cur");
+      var c = letters[i]; c.classList.add("on","cur");
+      var endOfWord = !c.nextElementSibling;
+      i++;
+      if(i < letters.length){ setTimeout(next, endOfWord ? 340 : 70 + Math.random()*60); }
+      else {
+        nameEl.classList.remove("typing"); revealDim();
+        setTimeout(function(){c.classList.remove("cur");}, 2600);
+      }
+    }
+    setTimeout(function(){ nameEl.classList.add("typing"); next(); }, 520);
+  }
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(typeName);
+  setTimeout(typeName, 1200);
 
   /* ---------- CAD crosshair + coordinates (inches, origin bottom-left) ---------- */
   var sheetIn = $("sheetIn"), xh = $("xh"), cx = $("cx"), cy = $("cy");
