@@ -150,7 +150,7 @@ h1.name > span{display:block;width:fit-content}
 .swarm.live{opacity:1;transition:opacity .12s}
 .sw-head{position:relative}
 .sw-head > .swarm{top:-120px;height:calc(100% + 240px)}
-.sw-head .w{transition:opacity .18s}
+.sw-head .w{transition:opacity .18s;white-space:nowrap}
 .sw-head.sw-wait .w,.sw-head.dissolve .w{opacity:0}
 .js .dim.wait{visibility:hidden}
 .typed .dim.wait{visibility:visible}
@@ -1026,6 +1026,19 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
     return best;
   }
   var swarms=[];
+  /* One rect per visible character, measured with a Range, so wrapped words land on the right line */
+  function charPieces(root){
+    var out=[], rg=document.createRange(), walk=document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n;
+    while((n=walk.nextNode())){
+      var t=n.nodeValue;
+      for(var i=0;i<t.length;i++){
+        if(/\s/.test(t[i])) continue;
+        rg.setStart(n,i); rg.setEnd(n,i+1);
+        var rc=rg.getBoundingClientRect(); if(rc.width>0) out.push({text:t[i], rect:rc, block:false});
+      }
+    }
+    return out;
+  }
 
   /* o: host (gets the canvas), text (element whose font is used), pieces() -> [{text, rect, block}],
      orbit [x,y] and ring [min, extra] shape the swarm, swarmMs/staggerMs time the rebuild,
@@ -1171,7 +1184,7 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
     /* the name, on load */
     var hero=Swarm({
       host:sheet, text:nameEl, orbit:[.62,1.2], ring:[1.15,1.1], swarmMs:620, staggerMs:720, overdue:4200,
-      pieces:function(){ return [].map.call(nameEl.children,function(l){ return {text:l.textContent, rect:l.getBoundingClientRect(), block:true}; }); },
+      pieces:function(){ return charPieces(nameEl); },
       hoverEl:sheet, hoverBox:function(){ return nameEl.getBoundingClientRect(); }, pad:36,
       onIntroDone:revealDim
     });
@@ -1204,7 +1217,7 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
       };
       var sw=Swarm({
         host:h, text:h, orbit:[.6,1.6], ring:[1.1,.8], swarmMs:320, staggerMs:520, overdue:3200,
-        pieces:function(){ return [].map.call(h.querySelectorAll(".w"),function(w){ return {text:w.textContent, rect:w.getBoundingClientRect(), block:false}; }); },
+        pieces:function(){ return charPieces(h); },
         hoverEl:h, hoverBox:wordBox, pad:24,
         onIntroDone:function(){ h.classList.remove("sw-wait"); }
       });
