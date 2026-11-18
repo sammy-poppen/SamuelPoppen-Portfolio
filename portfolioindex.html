@@ -444,10 +444,10 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
             <div class="hero-copy">
               <p class="eyebrow">Mechanical engineering · Miami University</p>
               <div class="namebox">
-                <div class="dim" id="dim" aria-hidden="true"><span class="arm l"></span><span class="dim-label" id="dimLabel">0.000</span><span class="arm r"></span></div>
+                <div class="dim" id="dim" aria-hidden="true"><span class="arm l"></span><span class="dim-label" id="dimLabel">X.XXX</span><span class="arm r"></span></div>
                 <h1 class="name" id="name"><span>Samuel</span><span>Poppen</span></h1>
               </div>
-              <p class="lede">Presidential Fellow in Miami University's Honors College, studying mechanical engineering with a minor in finance. I co-founded <strong>FlexForm Aeronautics</strong>, research sheet metal forming in the <strong>CRAFT Lab</strong>, and reverse engineer helicopter parts for <strong>MAC-Piranha Aero</strong>.</p>
+              <p class="lede">Presidential Fellow in Miami University's Honors College on an academic full-ride scholarship, studying mechanical engineering with a minor in finance. I co-founded <strong>FlexForm Aeronautics</strong>, research sheet metal forming in the <strong>CRAFT Lab</strong>, and reverse engineer helicopter parts for <strong>MAC-Piranha Aero</strong>.</p>
               <div class="cta">
                 <a class="btn primary" href="#flexform">See my work
                   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v11M3 8.5 8 13.5l5-5"/></svg></a>
@@ -986,11 +986,10 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
   fromHash();
 
   /* ---------- live dimension on the name ---------- */
-  var dim = $("dim"), dimLabel = $("dimLabel"), nameSpans = $("name").children;
+  var dim = $("dim"), nameSpans = $("name").children;
   function measure(){
     var w = 0; [].forEach.call(nameSpans,function(s){w=Math.max(w,s.getBoundingClientRect().width);});
     dim.style.setProperty("--w", w+"px");
-    dimLabel.textContent = (w/96).toFixed(3);
   }
   var raf = 0;
   window.addEventListener("resize",function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(measure);});
