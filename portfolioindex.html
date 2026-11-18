@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Samuel Poppen Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Samuel Poppen: mechanical engineering at Miami University. Co-founder and CEO of FlexForm Aeronautics, CRAFT Lab researcher, and builder of the Alloy Composition Matcher for Volynt Aero and MAC-Piranha Aero.">
+<script>try{var t=localStorage.getItem('sp-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wdth,wght@75..112.5,300..700&display=swap">
+<style>
+/* Layout: an engineering drawing set. The hero is sheet 1 (zone border, title block, live
+   dimension on the name, CAD crosshair); each body of work is a "sheet" or an embedded
+   working tool on a 0.25 in grid. Light = drafting vellum, dark = blueprint. */
+:root{
+  --paper:#F1F4F7;        /* vellum ground */
+  --paper-2:#E5EBF1;      /* raised / hover band */
+  --ink:#122033;          /* drafting ink */
+  --ink-2:#4C5C6F;        /* secondary text */
+  --rule:#CCD6E0;         /* hairlines */
+  --rule-strong:#9AAABB;  /* chip and zone borders */
+  --grid:rgba(52,98,150,.075);
+  --grid-major:rgba(52,98,150,.13);
+  --red:#C8381D;          /* redline markup */
+  --on-red:#FFFFFF;
+  /* print panels stay light in both themes; CAD whites multiply into them */
+  --sheet:#F1F4F7;
+  --sheet-grid:rgba(52,98,150,.08);
+  --sheet-ink:#122033;
+  --sheet-ink-2:#4C5C6F;
+  --sheet-rule:rgba(18,32,51,.16);
+  --sheet-red:#C8381D;
+  --ff-blue:#4F7DB8;      /* FlexForm logo blue */
+  --scrim:rgba(8,18,30,.58);
+
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+
+  --gut:max(20px, env(safe-area-inset-left, 0px));
+  --gut-r:max(20px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E2136; --paper-2:#15304C; --ink:#E3ECF6; --ink-2:#9CB1C8;
+    --rule:#24405E; --rule-strong:#3F5F82;
+    --grid:rgba(150,195,255,.06); --grid-major:rgba(150,195,255,.11);
+    --red:#FF8A66; --on-red:#0E2136;
+    --sheet:#EDF1F5; --scrim:rgba(2,8,16,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E2136; --paper-2:#15304C; --ink:#E3ECF6; --ink-2:#9CB1C8;
+  --rule:#24405E; --rule-strong:#3F5F82;
+  --grid:rgba(150,195,255,.06); --grid-major:rgba(150,195,255,.11);
+  --red:#FF8A66; --on-red:#0E2136;
+  --sheet:#EDF1F5; --scrim:rgba(2,8,16,.7);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html:has(dialog[open]){overflow:hidden}
+body{
+  margin:0;min-width:0;
+  background-color:var(--paper);color:var(--ink);
+  background-image:
+    linear-gradient(var(--grid-major) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:96px 96px,96px 96px,24px 24px,24px 24px;
+  font:400 16px/1.6 var(--body);
+  -webkit-font-smoothing:antialiased;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:var(--gut);padding-right:var(--gut-r)}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:14px;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.mark{width:30px;height:30px;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:11px;letter-spacing:0}
+.nav{margin-left:auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font:500 11px/1 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--ink-2);padding:9px 9px;white-space:nowrap}
+.nav a:hover{color:var(--ink)}
+.resume-btn{flex:none;font:600 11px/1 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;padding:11px 12px;border:1.5px solid var(--ink);color:var(--ink);text-decoration:none;white-space:nowrap}
+.resume-btn:hover{border-color:var(--red);color:var(--red)}
+.icon-btn{flex:none;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--rule-strong);background:var(--paper);color:var(--ink);cursor:pointer;padding:0}
+.icon-btn:hover{border-color:var(--ink)}
+.icon-btn svg{width:16px;height:16px}
+
+/* ---------- hero: drawing sheet ---------- */
+.hero{padding-block:28px 8px}
+.frame{position:relative;border:1px solid var(--rule-strong);padding:20px}
+.zn{position:absolute;display:grid;font:500 10px/1 var(--mono);color:var(--ink-2);pointer-events:none}
+.zn span{display:grid;place-items:center;border-left:1px solid var(--rule-strong)}
+.zn span:first-child{border-left:0}
+.zn.t,.zn.b{left:20px;right:20px;height:20px;grid-template-columns:repeat(6,1fr)}
+.zn.t{top:0}.zn.b{bottom:0}
+.zn.l,.zn.r{top:20px;bottom:20px;width:20px;grid-template-rows:repeat(4,1fr)}
+.zn.l span,.zn.r span{border-left:0;border-top:1px solid var(--rule-strong)}
+.zn.l span:first-child,.zn.r span:first-child{border-top:0}
+.zn.l{left:0}.zn.r{right:0}
+.sheet-in{
+  position:relative;overflow:hidden;border:1.5px solid var(--ink);
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+@media (hover:hover) and (pointer:fine){.sheet-in{cursor:crosshair}}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,330px);gap:48px;padding:clamp(28px,4.5vw,64px);align-items:center}
+.hero-copy{display:grid;gap:24px;min-width:0}
+.eyebrow{display:flex;align-items:center;gap:10px;margin:0;font:500 11px/1.3 var(--mono);font-stretch:87.5%;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.eyebrow::before{content:"";width:22px;height:1px;background:currentColor;flex:none}
+
+.namebox{display:grid;gap:14px}
+.dim{position:relative;height:18px;width:var(--w,100%);display:flex;align-items:center;gap:10px;color:var(--red)}
+.dim::before,.dim::after{content:"";position:absolute;top:-2px;height:34px;width:1px;background:var(--red);opacity:.7}
+.dim::before{left:0}.dim::after{right:0}
+.arm{flex:1;height:1px;background:var(--red);position:relative}
+.arm.l::before,.arm.r::after{content:"";position:absolute;top:-4px;border-top:4.5px solid transparent;border-bottom:4.5px solid transparent}
+.arm.l::before{left:0;border-right:10px solid var(--red)}
+.arm.r::after{right:0;border-left:10px solid var(--red)}
+.dim-label{font:500 12px/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.arm.l{transform-origin:100% 50%}.arm.r{transform-origin:0 50%}
+.dim.go .arm{animation:draw .7s cubic-bezier(.2,.7,.2,1) both}
+
+h1.name{margin:0;font-family:var(--display);font-stretch:125%;font-weight:820;text-transform:uppercase;font-size:clamp(46px,8.2vw,128px);line-height:.86;letter-spacing:-.005em}
+h1.name span{display:block;width:fit-content}
+.lede{margin:0;font-size:clamp(17px,1.5vw,19px);line-height:1.55;color:var(--ink-2);max-width:58ch}
+.lede strong{color:var(--ink);font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;border:1.5px solid var(--ink);font:600 15px/1 var(--body);color:var(--ink);text-decoration:none;background:transparent;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:hover{border-color:var(--red);color:var(--red)}
+.btn.primary:hover{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.btn svg{width:15px;height:15px}
+
+.portrait{position:relative;margin:0;display:grid;gap:12px}
+.detail{position:relative;aspect-ratio:1}
+.ring{position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--ink-2)}
+.ring img{position:absolute;inset:10px;width:calc(100% - 20px);height:calc(100% - 20px);border-radius:50%;object-fit:cover;object-position:50% 30%}
+.ring-tag{position:absolute;left:2%;top:4%;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);display:grid;place-items:center;font:600 12px/1 var(--mono);z-index:2}
+.portrait figcaption{font:500 10.5px/1.5 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);border-top:1px solid var(--ink);padding-top:8px}
+
+.hero-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;border-top:1.5px solid var(--ink);background:var(--paper)}
+.status{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:12px 18px;font:500 11px/1.4 var(--mono);font-stretch:87.5%;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.status b{font-weight:600;color:var(--ink)}
+.status .live{display:none}
+@media (hover:hover) and (pointer:fine){.status .live{display:inline}}
+.tb{display:grid;grid-template-columns:repeat(3,auto);border-left:1.5px solid var(--ink)}
+.tb div{padding:8px 14px;border-left:1px solid var(--rule-strong);border-top:1px solid var(--rule-strong);display:grid;gap:3px;min-width:0}
+.tb div:nth-child(3n+1){border-left:0}
+.tb div:nth-child(-n+3){border-top:0}
+.tb small{font:500 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.tb span{font:600 12px/1.2 var(--mono);font-stretch:87.5%;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+
+.xh{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .2s;z-index:1}
+.xh.on{opacity:1}
+.xh i{position:absolute;background:var(--red);opacity:.32}
+.xh .h{left:0;right:0;top:0;height:1px;transform:translateY(var(--y,0))}
+.xh .v{top:0;bottom:0;left:0;width:1px;transform:translateX(var(--x,0))}
+.xh b{position:absolute;left:0;top:0;width:11px;height:11px;border:1px solid var(--red);transform:translate(calc(var(--x,0) - 5px),calc(var(--y,0) - 5px))}
+
+/* ---------- shared section pieces ---------- */
+section.band{padding-block:clamp(72px,9vw,120px);scroll-margin-top:58px}
+.sec-head{display:grid;gap:16px;max-width:800px;margin-bottom:44px}
+h2{margin:0;font-family:var(--display);font-stretch:112%;font-weight:760;font-size:clamp(32px,4.3vw,54px);line-height:1.02;letter-spacing:-.012em;text-wrap:balance}
+.sec-head p{margin:0;font-size:18px;color:var(--ink-2);max-width:64ch}
+.sec-head p.role-line{font:600 12px/1.4 var(--mono);font-stretch:87.5%;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
+.lst-h{margin:0 0 10px;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.split{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px;align-items:start}
+
+.sheet{
+  position:relative;border:1px solid var(--rule);
+  background-color:var(--sheet);
+  background-image:linear-gradient(var(--sheet-grid) 1px,transparent 1px),linear-gradient(90deg,var(--sheet-grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.sheet img{mix-blend-mode:multiply}
+
+.specrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:44px 0 0;border-top:1.5px solid var(--ink)}
+.specrow div{padding:14px 18px 0 0;min-width:0}
+.specrow dt{font:500 10.5px/1.3 var(--mono);font-stretch:87.5%;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.specrow dd{margin:6px 0 0;font-family:var(--display);font-stretch:112%;font-weight:720;font-size:clamp(19px,2vw,24px);line-height:1.15;font-variant-numeric:tabular-nums}
+
+ul.ticks{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+ul.ticks li{position:relative;padding:12px 0 12px 26px;border-bottom:1px solid var(--rule);font-size:16.5px;line-height:1.45}
+ul.ticks li::before{content:"";position:absolute;left:0;top:23px;width:13px;height:1.5px;background:var(--red)}
+.small{margin:10px 0 0;color:var(--ink-2);font-size:14.5px}
+
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font-size:15.5px;line-height:1.5;color:var(--ink-2)}
+ol.steps li::before{content:counter(s,decimal-leading-zero);font:600 12px/1.7 var(--mono);color:var(--red)}
+ol.steps b{display:block;color:var(--ink);font-weight:650;margin-bottom:2px}
+
+/* embedded working tools */
+.screen{border:1.5px solid var(--ink);background:var(--paper);min-width:0}
+.screen-bar{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1.5px solid var(--ink);font:500 10.5px/1.3 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.screen-bar a{color:var(--red);text-decoration:none;white-space:nowrap;font-weight:600}
+.screen-bar a:hover{text-decoration:underline;text-underline-offset:3px}
+.screen iframe{display:block;width:100%;border:0;background:#fff}
+#triFrame{height:1000px}
+#alloyFrame{height:clamp(560px,82vh,880px)}
+.screen-note{margin:0;padding:10px 14px;border-top:1px solid var(--rule);font:500 10.5px/1.5 var(--mono);font-stretch:87.5%;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2)}
+
+/* FlexForm */
+.feat-body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:44px;align-items:start}
+.ff-fig{margin:0;padding:clamp(18px,3vw,36px);display:grid;gap:18px;justify-items:center}
+.ff-logo{width:min(100%,560px);height:auto;aspect-ratio:1774/470;object-fit:cover;object-position:50% 52%}
+.foil{width:100%;display:grid;gap:12px;border-top:1px solid var(--sheet-rule);padding-top:18px}
+#foil{width:100%;height:auto;display:block}
+#foil .chord{stroke:var(--sheet-ink);stroke-opacity:.3;stroke-dasharray:6 6;stroke-width:1.4}
+#foil .ref{fill:none;stroke:var(--sheet-ink);stroke-opacity:.38;stroke-dasharray:5 5;stroke-width:1.4}
+#foil .shape{fill:var(--ff-blue);fill-opacity:.18;stroke:var(--sheet-ink);stroke-width:2.6;stroke-linejoin:round}
+#foil .dimln{stroke:var(--sheet-red);stroke-width:1.6;fill:none}
+.foil-ctl{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;font:500 10.5px/1.2 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--sheet-ink)}
+.foil-ctl input{width:100%;accent-color:var(--sheet-red);margin:0}
+.foil-ctl output{min-width:62px;text-align:right;font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;color:var(--sheet-red)}
+.ff-fig figcaption{width:100%;font:500 10.5px/1.6 var(--mono);font-stretch:87.5%;letter-spacing:.04em;text-transform:uppercase;color:var(--sheet-ink-2)}
+.ff-lists{display:grid;gap:30px;align-content:start}
+
+/* research papers */
+.stack{display:grid;gap:22px;align-content:start}
+.paper{border:1.5px solid var(--ink);background:var(--paper)}
+.paper-bar{display:flex;justify-content:space-between;gap:10px;padding:10px 16px;border-bottom:1px solid var(--rule);font:500 10.5px/1.3 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.paper-bar span:first-child{color:var(--red);font-weight:600}
+.paper p{margin:0;padding:16px;font-size:16px;line-height:1.55}
+
+/* aircraft */
+.feat-fig{margin:0;padding:clamp(16px,3vw,36px)}
+.pinbox{position:relative}
+.pinbox img{width:100%;height:auto}
+.pin{position:absolute;width:0;height:0;--L:46px;--d:calc(var(--L) * .7071)}
+.pin::before{content:"";position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--sheet-red)}
+.lead{position:absolute;left:0;top:0;width:var(--L);height:1px;background:var(--sheet-red);transform-origin:0 50%;transform:rotate(var(--a))}
+.bal{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:1.5px solid var(--sheet-red);background:var(--sheet);color:var(--sheet-red);display:grid;place-items:center;font:600 12px/1 var(--mono);transition:background .15s,color .15s}
+.pin.nw{--a:-135deg}.pin.nw .bal{left:calc(-1 * var(--d));top:calc(-1 * var(--d))}
+.pin.ne{--a:-45deg}.pin.ne .bal{left:var(--d);top:calc(-1 * var(--d))}
+.pin.sw{--a:135deg}.pin.sw .bal{left:calc(-1 * var(--d));top:var(--d)}
+.pin.on .bal{background:var(--sheet-red);color:#fff}
+.callouts{list-style:none;margin:0;padding:0;display:grid}
+.callouts li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;padding-block:18px;border-top:1px solid var(--rule)}
+.callouts li:first-child{border-top:0;padding-top:4px}
+.num{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--red);color:var(--red);display:grid;place-items:center;font:600 12px/1 var(--mono);transition:background .15s,color .15s}
+.callouts li.on .num{background:var(--red);color:var(--on-red)}
+.callouts h3{margin:3px 0 4px;font:650 17px/1.3 var(--body)}
+.callouts p{margin:0;font-size:15px;color:var(--ink-2)}
+
+/* experience + skills */
+.xp{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:start}
+.entries{list-style:none;margin:0;padding:0}
+.entries li{display:grid;grid-template-columns:118px minmax(0,1fr);gap:20px;padding-block:22px;border-top:1px solid var(--rule)}
+.entries li:first-child{border-top:1.5px solid var(--ink)}
+.when{font:500 11px/1.5 var(--mono);font-stretch:87.5%;letter-spacing:.05em;text-transform:uppercase;color:var(--red);padding-top:4px}
+.entries h3{margin:0;font-family:var(--display);font-stretch:108%;font-weight:700;font-size:20px;line-height:1.25}
+.entries .role{margin:4px 0 8px;font-weight:550;font-size:15px}
+.entries p{margin:0;color:var(--ink-2);font-size:15.5px;max-width:60ch}
+.more{display:inline-block;margin-top:8px;font:500 10.5px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--red);text-decoration:none}
+.more:hover{text-decoration:underline;text-underline-offset:3px}
+.skills{border:1.5px solid var(--ink);background:var(--paper);padding:22px;display:grid;gap:24px;position:sticky;top:84px}
+.skills h3{font-family:var(--display);font-stretch:112%;font-weight:740;font-size:24px;margin:0}
+.prof{margin:0;display:grid}
+.prof div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--rule)}
+.prof div:first-child{border-top:1.5px solid var(--ink)}
+.prof dt{font-size:15px;font-weight:550}
+.prof dd{margin:0;display:flex;align-items:center;gap:10px;font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.gauge{display:flex;gap:3px}
+.gauge i{width:14px;height:6px;background:var(--rule)}
+.gauge i.on{background:var(--red)}
+ul.tags{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+ul.tags li{padding:7px 10px;border:1px solid var(--rule-strong);font:500 11.5px/1 var(--mono);font-stretch:87.5%}
+
+/* robotics archive */
+.robo-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:40px;align-items:end;margin-bottom:34px}
+.robo-head .sec-head{margin-bottom:0}
+.robo-photo{margin:0;display:grid;gap:8px}
+.robo-photo img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1.5px solid var(--ink)}
+.robo-photo figcaption{font:500 10px/1.5 var(--mono);font-stretch:87.5%;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{display:inline-flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid var(--rule-strong);background:var(--paper);color:var(--ink);font:550 13.5px/1 var(--body);cursor:pointer}
+.chip .n{font:500 11px/1 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip[aria-pressed="true"] .n{color:inherit;opacity:.72}
+.fstatus{min-height:22px;margin:0 0 26px;font:500 11px/1.6 var(--mono);font-stretch:87.5%;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
+.fstatus b{color:var(--ink);font-weight:600}
+.linkbtn{background:none;border:0;padding:0;margin-left:10px;font:inherit;color:var(--red);text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-transform:inherit;letter-spacing:inherit}
+.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 20px}
+.card{position:relative;display:grid;gap:8px;align-content:start}
+.card-sheet{aspect-ratio:3/2;overflow:hidden;transition:border-color .2s}
+.card-sheet img{position:absolute;left:7%;top:7%;width:86%;height:86%;object-fit:contain;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.card-sheet::before,.card-sheet::after{content:"";position:absolute;width:12px;height:12px;border:2px solid var(--sheet-red);opacity:0;transition:opacity .2s;z-index:1}
+.card-sheet::before{left:6px;top:6px;border-right:0;border-bottom:0}
+.card-sheet::after{right:6px;bottom:6px;border-left:0;border-top:0}
+.card:hover .card-sheet{border-color:var(--ink-2)}
+.card:hover .card-sheet::before,.card:hover .card-sheet::after{opacity:1}
+.card:hover .card-sheet img{transform:scale(1.04)}
+.cmeta{display:flex;gap:10px;font:500 10px/1.2 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);padding-top:2px}
+.cmeta span:last-child{margin-left:auto}
+.card h3{margin:0;font-family:var(--display);font-stretch:106%;font-weight:700;font-size:16.5px;line-height:1.25}
+.card p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.45}
+.open{all:unset;cursor:pointer}
+.open::after{content:"";position:absolute;inset:-6px;z-index:2}
+.open:focus-visible::after{outline:2px solid var(--red)}
+.card:hover h3{color:var(--red)}
+@keyframes rise{from{transform:translateY(10px)}to{transform:none}}
+.grid li.enter{animation:rise .32s cubic-bezier(.2,.7,.2,1) both}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:56px;align-items:start}
+.contact .sec-head{margin-bottom:0}
+.cblock{border:1.5px solid var(--ink);background:var(--paper)}
+.crow{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:16px;align-items:center;padding:20px 22px;border-top:1px solid var(--rule)}
+.crow:first-child{border-top:0}
+.crow small{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.crow .v{font-family:var(--display);font-stretch:108%;font-weight:700;font-size:clamp(18px,2.2vw,26px);line-height:1.2;overflow-wrap:anywhere;text-decoration:none}
+.crow a.v:hover{color:var(--red)}
+.copy{display:inline-block;font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border:1px solid var(--rule-strong);background:var(--paper);color:var(--ink);cursor:pointer;white-space:nowrap;text-decoration:none}
+.copy:hover{border-color:var(--ink)}
+
+footer{border-top:1.5px solid var(--ink);background:var(--paper)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:22px;font:500 11px/1.4 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+footer a{text-decoration:none}
+footer a:hover{color:var(--red)}
+
+/* ---------- project sheet dialog ---------- */
+dialog.dlg{padding:0;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);width:min(1160px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);overflow:hidden}
+dialog.dlg[open]{display:flex;flex-direction:column;animation:pop .22s cubic-bezier(.2,.7,.2,1)}
+dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
+@keyframes pop{from{transform:translateY(12px)}to{transform:none}}
+.dbar{display:flex;align-items:center;gap:8px;padding:10px 12px 10px 20px;border-bottom:1.5px solid var(--ink);font:500 11px/1.3 var(--mono);font-stretch:87.5%;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.dbar .acts{margin-left:auto;display:flex;gap:6px}
+.dbody{overflow:auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);min-height:0}
+.dfig{padding:24px;border-right:1px solid var(--rule);display:grid;gap:12px;align-content:start}
+.dfig .sheet{aspect-ratio:4/3}
+.dfig .sheet img{position:absolute;left:5%;top:5%;width:90%;height:90%;object-fit:contain}
+.thumbs{display:flex;gap:8px}
+.thumbs button{width:72px;height:54px;padding:4px;border:1px solid var(--rule);background:var(--sheet);cursor:pointer}
+.thumbs button[aria-pressed="true"]{border:2px solid var(--red)}
+.thumbs img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.dinfo{padding:28px 32px 40px;display:grid;gap:18px;align-content:start}
+.dinfo h2{font-size:clamp(28px,3.2vw,40px)}
+.dlede{margin:0;font-size:17px;color:var(--ink-2)}
+.dnote{margin:0;padding:12px 14px;border:1px solid var(--red);color:var(--ink);font-size:15px}
+.dnote b{color:var(--red);font:600 10.5px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;display:block;margin-bottom:6px}
+.dinfo h3{margin:6px 0 0;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.slist{list-style:none;margin:0;padding:0;display:grid}
+.slist li{position:relative;padding:10px 0 10px 24px;border-top:1px solid var(--rule);font-size:15.5px;line-height:1.5}
+.slist li:first-child{border-top:1.5px solid var(--ink)}
+.slist li::before{content:"";position:absolute;left:0;top:21px;width:12px;height:1.5px;background:var(--red)}
+.tagrow{display:flex;flex-wrap:wrap;gap:8px}
+
+/* ---------- responsive ---------- */
+@media (max-width:1020px){
+  .feat-body,.split,.xp,.contact,.robo-head{grid-template-columns:minmax(0,1fr);gap:36px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .skills{position:static}
+  .hero-foot{grid-template-columns:minmax(0,1fr)}
+  .tb{border-left:0;border-top:1.5px solid var(--ink)}
+  .robo-photo{max-width:520px}
+}
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:36px}
+  .portrait{max-width:280px}
+  .dbody{grid-template-columns:minmax(0,1fr)}
+  .dfig{border-right:0;border-bottom:1px solid var(--rule)}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .brand .bname{display:none}
+  .top .wrap{gap:8px}
+  .nav a{padding:9px 6px;font-size:10.5px}
+  .frame{padding:14px}
+  .zn.t,.zn.b{left:14px;right:14px;height:14px;grid-template-columns:repeat(4,1fr)}
+  .zn.t span:nth-child(n+5),.zn.b span:nth-child(n+5){display:none}
+  .zn.l,.zn.r{top:14px;bottom:14px;width:14px}
+  .zn{font-size:8px}
+  .hero-grid{padding:24px 20px 28px}
+  .specrow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .specrow div{padding-bottom:14px}
+  .tb{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tb div{border-left:1px solid var(--rule-strong)!important;border-top:1px solid var(--rule-strong)!important}
+  .tb div:nth-child(odd){border-left:0!important}
+  .tb div:nth-child(-n+2){border-top:0!important}
+  .tb span{white-space:normal}
+  .entries li{grid-template-columns:minmax(0,1fr);gap:6px}
+  .crow{grid-template-columns:minmax(0,1fr);gap:8px}
+  .crow .copy{justify-self:start}
+  .pin{--L:30px}
+  .bal{width:24px;height:24px;margin:-12px 0 0 -12px;font-size:10.5px}
+  .card p{display:none}
+  .grid{gap:26px 14px}
+  .foil-ctl{grid-template-columns:minmax(0,1fr) auto}
+  .foil-ctl label{grid-column:1 / -1}
+  #triFrame{height:1080px}
+  dialog.dlg{width:100vw;max-height:100dvh;height:100dvh;border:0;margin:0}
+  .dinfo{padding:24px 20px 36px}
+  .dfig{padding:16px}
+}
+@media (max-width:440px){.nav .opt{display:none}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Samuel Poppen, back to top"><span class="mark">SP</span><span class="bname">Samuel Poppen</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#flexform">FlexForm</a>
+      <a href="#research">Research</a>
+      <a class="opt" href="#alloy">Volynt</a>
+      <a class="opt" href="#aircraft">Aircraft</a>
+      <a class="opt" href="#experience">Experience</a>
+      <a class="opt" href="#contact">Contact</a>
+    </nav>
+    <a class="resume-btn" href="Samuel-Poppen-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to dark theme">
+      <svg id="icoMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg id="icoSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- SHEET 1: hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="wrap">
+      <div class="frame">
+        <div class="zn t" aria-hidden="true"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+        <div class="zn b" aria-hidden="true"><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+        <div class="zn l" aria-hidden="true"><span>D</span><span>C</span><span>B</span><span>A</span></div>
+        <div class="zn r" aria-hidden="true"><span>D</span><span>C</span><span>B</span><span>A</span></div>
+
+        <div class="sheet-in" id="sheetIn">
+          <div class="xh" id="xh" aria-hidden="true"><i class="h"></i><i class="v"></i><b></b></div>
+
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">Mechanical engineering · Miami University</p>
+              <div class="namebox">
+                <div class="dim" id="dim" aria-hidden="true"><span class="arm l"></span><span class="dim-label" id="dimLabel">0.000</span><span class="arm r"></span></div>
+                <h1 class="name" id="name"><span>Samuel</span><span>Poppen</span></h1>
+              </div>
+              <p class="lede">Presidential Fellow in Miami University's Honors College, studying mechanical engineering with a minor in finance. I co-founded <strong>FlexForm Aeronautics</strong>, research sheet metal forming in the <strong>CRAFT Lab</strong>, and build engineering tools for <strong>Volynt Aero</strong> and <strong>MAC-Piranha Aero</strong>.</p>
+              <div class="cta">
+                <a class="btn primary" href="#flexform">See my work
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v11M3 8.5 8 13.5l5-5"/></svg></a>
+                <a class="btn" href="Samuel-Poppen-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+              </div>
+            </div>
+
+            <figure class="portrait">
+              <div class="detail">
+                <span class="ring"><img src="images/portrait.webp" alt="Portrait of Samuel Poppen" width="1023" height="1537"></span>
+                <span class="ring-tag" aria-hidden="true">A</span>
+              </div>
+              <figcaption>Detail A · S. Poppen · Scale 1:1</figcaption>
+            </figure>
+          </div>
+
+          <div class="hero-foot">
+            <div class="status" aria-hidden="true">
+              <span class="live">X <b id="cx">0.000</b></span>
+              <span class="live">Y <b id="cy">0.000</b></span>
+              <span>Grid <b>0.250</b></span>
+              <span>Units <b>in</b></span>
+            </div>
+            <div class="tb">
+              <div><small>Drawn by</small><span>S. Poppen</span></div>
+              <div><small>Institution</small><span>Miami Univ., Oxford OH</span></div>
+              <div><small>Class</small><span>Honors '29</span></div>
+              <div><small>Degree</small><span>B.S. Mech. Eng.</span></div>
+              <div><small>Minor</small><span>Finance</span></div>
+              <div><small>Rev</small><span>2026</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. FlexForm Aeronautics -->
+  <section class="band" id="flexform">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Featured · 2026–present</p>
+        <h2>FlexForm Aeronautics Inc.</h2>
+        <p class="role-line">CEO and Co-Founder</p>
+        <p>FlexForm is building the next generation of adaptive lifting surfaces. I lead the company and the integration of my patent-pending technology into drones, maritime systems and automotive systems.</p>
+      </div>
+
+      <div class="feat-body">
+        <figure class="sheet ff-fig">
+          <img class="ff-logo" src="images/flexform-logo.webp" alt="FlexForm Aeronautics logo" width="1774" height="887">
+          <div class="foil">
+            <svg id="foil" viewBox="0 0 1000 240" role="img" aria-label="Illustration of an airfoil section changing its trailing-edge camber">
+              <line class="chord" x1="60" y1="112" x2="940" y2="112"></line>
+              <path class="ref" id="foilRef" d=""></path>
+              <path class="shape" id="foilShape" d=""></path>
+              <path class="dimln" id="foilDim" d=""></path>
+            </svg>
+            <div class="foil-ctl">
+              <label for="camber">Trailing-edge camber</label>
+              <input type="range" id="camber" min="-100" max="100" value="60" step="1">
+              <output id="camberOut" for="camber">+0.0°</output>
+            </div>
+          </div>
+          <figcaption>Illustration of an adaptive section. Dashed outline: neutral shape. Red bracket: the aft 38% of the chord that changes camber.</figcaption>
+        </figure>
+
+        <div class="ff-lists">
+          <div>
+            <h3 class="lst-h">Applications</h3>
+            <ul class="ticks">
+              <li>Military combat and surveillance drones</li>
+              <li>Wildfire surveillance drones</li>
+              <li>Maritime systems</li>
+              <li>Automotive systems</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="lst-h">Go to market</h3>
+            <ul class="ticks">
+              <li>Licensing to tier 1 defense contractors</li>
+              <li>Direct government sales</li>
+              <li>Emergency services platforms</li>
+            </ul>
+            <p class="small">Through scalable licensing agreements at marginal cost.</p>
+          </div>
+        </div>
+      </div>
+
+      <dl class="specrow">
+        <div><dt>Role</dt><dd>CEO, Co-Founder</dd></div>
+        <div><dt>Founded</dt><dd>2026</dd></div>
+        <div><dt>Technology</dt><dd>Patent-pending</dd></div>
+        <div><dt>Business model</dt><dd>Licensing</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 2. CRAFT Lab research -->
+  <section class="band" id="research">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Research · Miami University CRAFT Lab · 2025–present</p>
+        <h2>Sheet metal forming research</h2>
+        <p>I'm an undergraduate author and researcher in the CRAFT Lab, working alongside graduate students on two papers. The walkthrough on this page shows one of the methods: estimating hardness anywhere on a formed sheet from a set of test points.</p>
+      </div>
+
+      <div class="split">
+        <div class="stack">
+          <article class="paper">
+            <div class="paper-bar"><span>Review paper</span><span>Undergraduate author</span></div>
+            <p>A comprehensive review of the major sheet metal forming methods and how digital twins, robotics and machine learning are being integrated into them.</p>
+          </article>
+          <article class="paper">
+            <div class="paper-bar"><span>Technical paper</span><span>Undergraduate author</span></div>
+            <p>A physics-informed machine learning (PIML) architecture that predicts the geometric outcome of sheet metal specimens formed with the English wheel process.</p>
+          </article>
+          <div>
+            <h3 class="lst-h">How the interpolation works</h3>
+            <ol class="steps">
+              <li><div>Hardness is measured at 87 test points across a 12.25 × 9.75 in sheet.</div></li>
+              <li><div>The points are joined into a Delaunay triangulation.</div></li>
+              <li><div>For any spot on the sheet, the walkthrough finds the triangle that contains it and computes barycentric weights for its three corners.</div></li>
+              <li><div>The weights blend the three corner readings into a predicted hardness. Outside the tested area it falls back to inverse-distance weighting.</div></li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="screen">
+          <div class="screen-bar"><span>Delaunay triangulation interpolation</span><a href="work/delaunay-triangulation.html" target="_blank" rel="noopener">Open full page ↗</a></div>
+          <iframe id="triFrame" src="work/delaunay-triangulation.html" title="Delaunay triangulation interpolation walkthrough" loading="lazy"></iframe>
+          <p class="screen-note">Click anywhere on the sheet to move the spot. Readings shown are example values.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Volynt Aero + MAC-Piranha Aero -->
+  <section class="band" id="alloy">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Industry work · Volynt Aero and MAC-Piranha Aero</p>
+        <h2>Alloy Composition Matcher</h2>
+        <p>I built this materials tool for my work with Volynt Aero and MAC-Piranha Aero. Enter a measured chemistry and it identifies the alloy, ranks US-available alternatives and exports a report. Volynt Aero is developing Vyper, an unmanned hybrid-electric eVTOL cargo aircraft, in Oxford, Ohio.</p>
+      </div>
+
+      <div class="split">
+        <div>
+          <h3 class="lst-h">How it works</h3>
+          <ol class="steps">
+            <li><div><b>Enter the measured composition</b>Element symbols and wt%, with the last element optionally set as the balance.</div></li>
+            <li><div><b>Check every grade</b>Each specified element must fall inside the grade's min/max. Unspecified elements are held to residual or "others, each" limits.</div></li>
+            <li><div><b>Rank the matches</b>By base metal, then out-of-range elements, unmeasured required elements, total deviation and specificity.</div></li>
+            <li><div><b>Find US-available alternatives</b>A 0–100% equivalence score weighs tensile strength, yield, hardness, elongation, hardenability (ASTM A255 ideal critical diameter) and optional cost.</div></li>
+            <li><div><b>Export the report</b>PDF or PNG with the composition, element-by-element checklists, alternatives, method and references.</div></li>
+          </ol>
+        </div>
+        <div class="screen">
+          <div class="screen-bar"><span>Alloy Composition Matcher</span><a href="work/alloy-matcher.html" target="_blank" rel="noopener">Open full page ↗</a></div>
+          <iframe id="alloyFrame" src="work/alloy-matcher.html" title="Alloy Composition Matcher" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <dl class="specrow">
+        <div><dt>Grades in database</dt><dd>546</dd></div>
+        <div><dt>Alloy families</dt><dd>9</dd></div>
+        <div><dt>National standards</dt><dd>7 systems</dd></div>
+        <div><dt>Reports</dt><dd>PDF · PNG</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 4. Experimental Aircraft Club -->
+  <section class="band" id="aircraft">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Experimental Aircraft Club · 2025–present</p>
+        <h2>Ultra-light single-seat aircraft</h2>
+        <p class="role-line">Founder · Design and fabrication lead</p>
+        <p>I founded Miami University's Experimental Aircraft Club so undergraduates can take a real, safety-critical aircraft through the whole engineering lifecycle: concept, structural analysis, material selection, fabrication, testing and flight. The design is a single-occupant ultra-light developed with Mini-MAX USA, aligned with FAR Part 103 performance constraints and low wing-loading requirements.</p>
+      </div>
+
+      <div class="feat-body">
+        <figure class="sheet feat-fig">
+          <div class="pinbox">
+            <img src="images/aircraft.png" alt="CAD model of the wooden truss airframe: wings with exposed ribs and spars, cockpit bay, tapered truss boom and open-frame tail" width="847" height="433" loading="lazy">
+            <span class="pin nw" data-k="1" style="left:25%;top:51%"><span class="lead"></span><span class="bal">1</span></span>
+            <span class="pin sw" data-k="2" style="left:41%;top:66%"><span class="lead"></span><span class="bal">2</span></span>
+            <span class="pin nw" data-k="3" style="left:55%;top:48%"><span class="lead"></span><span class="bal">3</span></span>
+            <span class="pin ne" data-k="4" style="left:69%;top:37%"><span class="lead"></span><span class="bal">4</span></span>
+          </div>
+        </figure>
+
+        <ol class="callouts" id="callouts">
+          <li data-k="1"><span class="num" aria-hidden="true">1</span><div><h3>Mid-wing, rib and spar</h3><p>Exposed wooden ribs and spars, built for fabric covering and efficient low-Reynolds-number flight. Metal brackets at the wing–fuselage joint keep it torsionally rigid and carry loads safely.</p></div></li>
+          <li data-k="2"><span class="num" aria-hidden="true">2</span><div><h3>Single-occupant cockpit bay</h3><p>A simplified cockpit bay sits ahead of the fuselage truss.</p></div></li>
+          <li data-k="3"><span class="num" aria-hidden="true">3</span><div><h3>Trussed wooden structure</h3><p>The fuselage and wing skeleton are almost entirely lightweight wood, with aluminum brackets and sheet-metal fittings at the high-load joints. A tapered truss boom runs back to the tail.</p></div></li>
+          <li data-k="4"><span class="num" aria-hidden="true">4</span><div><h3>Open-frame stabilizers</h3><p>Vertical and horizontal stabilizers are open frames, kept light and simple to cover in fabric.</p></div></li>
+        </ol>
+      </div>
+
+      <dl class="specrow">
+        <div><dt>Empty weight</dt><dd>230–267 lb</dd></div>
+        <div><dt>Category</dt><dd>FAR Part 103</dd></div>
+        <div><dt>Occupants</dt><dd>1</dd></div>
+        <div><dt>Partner</dt><dd>Mini-MAX USA</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 5. Experience + skills -->
+  <section class="band" id="experience">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Experience</p>
+        <h2>Record</h2>
+      </div>
+      <div class="xp">
+        <ol class="entries">
+          <li>
+            <span class="when">2025–present</span>
+            <div><h3>Miami University</h3><p class="role">Presidential Fellow Scholar · Honors College '29</p><p>Bachelor of Science in Mechanical Engineering with a minor in Finance, on an academic full-ride scholarship.</p></div>
+          </li>
+          <li>
+            <span class="when">2026–present</span>
+            <div><h3>FlexForm Aeronautics Inc.</h3><p class="role">CEO, Co-Founder</p><p>Leading the integration of my patent-pending adaptive lifting surface technology into drones, maritime and automotive systems, licensed to defense contractors, government and emergency services.</p><a class="more" href="#flexform">Details ↑</a></div>
+          </li>
+          <li>
+            <span class="when">2025–present</span>
+            <div><h3>CRAFT Lab, Miami University</h3><p class="role">Undergraduate Author, Researcher</p><p>Authoring a review paper on sheet metal forming methods with digital twins, robotics and machine learning, and a technical paper on a physics-informed machine learning model for the English wheel process.</p><a class="more" href="#research">Details ↑</a></div>
+          </li>
+          <li>
+            <span class="when">2026</span>
+            <div><h3>Volynt Aero and MAC-Piranha Aero</h3><p class="role">Alloy Composition Matcher</p><p>Built a tool that identifies alloys from measured chemistry across 546 grades, suggests US-available alternatives and exports reports.</p><a class="more" href="#alloy">Details ↑</a></div>
+          </li>
+          <li>
+            <span class="when">2025–present</span>
+            <div><h3>Experimental Aircraft Club</h3><p class="role">Founder, Design and Fabrication Lead</p><p>Designing an ultra-light, single-seat experimental aircraft (230–267 lb empty) with a trussed wooden fuselage and wing structure.</p><a class="more" href="#aircraft">Details ↑</a></div>
+          </li>
+          <li>
+            <span class="when">2021–present</span>
+            <div><h3>FIRST Robotics Team #5199</h3><p class="role">Mentor</p><p>Designing and building team robots in CAD, engineering mechanical, electrical and pneumatic systems. Won the 2025 Aerospace Valley Regional.</p><a class="more" href="#robotics">Robot projects ↓</a></div>
+          </li>
+          <li>
+            <span class="when">2023–2025</span>
+            <div><h3>Ciro Design Racing</h3><p class="role">Design Assistant</p><p>Created 1968 C3 Corvette racing parts in CAD, prototyped a dual-element aluminum front wing kit for the Ariel Atom, and ran finite element analysis on single-element carbon fiber wing systems.</p></div>
+          </li>
+          <li>
+            <span class="when">2023–2025</span>
+            <div><h3>Valta Energy</h3><p class="role">Research Assistant</p><p>Researched civil, mechanical and electrical engineering concepts for a project under NDA. Built peak electrical rate forecasting, consumption optimization and cost analysis calculators from SDG&amp;E, SCE and PG&amp;E pricing and usage data.</p></div>
+          </li>
+        </ol>
+
+        <aside class="skills" aria-labelledby="skillsH">
+          <h3 id="skillsH">Skills</h3>
+          <div>
+            <p class="lst-h">Proficiency</p>
+            <dl class="prof" id="prof"></dl>
+          </div>
+          <div>
+            <p class="lst-h">Software</p>
+            <ul class="tags"><li>MATLAB</li><li>Python</li><li>SolidWorks</li><li>Fusion 360</li><li>Siemens NX</li><li>AutoCAD</li><li>Onshape</li></ul>
+          </div>
+          <div>
+            <p class="lst-h">Hands-on</p>
+            <ul class="tags"><li>Haas routing</li><li>Manual milling</li><li>3D printing</li><li>Hardware prototyping</li></ul>
+          </div>
+          <a class="btn primary" href="Samuel-Poppen-Resume.pdf" target="_blank" rel="noopener">Open resume (PDF)</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Robotics archive -->
+  <section class="band" id="robotics">
+    <div class="wrap">
+      <div class="robo-head">
+        <div class="sec-head">
+          <p class="eyebrow">High school · FIRST Robotics Team #5199</p>
+          <h2>Robot mechanisms</h2>
+          <p>Mechanisms I designed in CAD for Team #5199 from 2022 to 2025. I still mentor the team. Open any project for its full spec sheet.</p>
+        </div>
+        <figure class="robo-photo">
+          <img src="images/team-5199.jpeg" alt="Team 5199 posing with their robot and the 2025 Aerospace Valley Regional winner banner" width="1600" height="900" loading="lazy">
+          <figcaption>Team #5199 after winning the 2025 Aerospace Valley Regional</figcaption>
+        </figure>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filter by system"></div>
+      <p class="fstatus" id="fstatus" aria-live="polite"></p>
+      <ul class="grid" id="grid"></ul>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="band" id="contact">
+    <div class="wrap contact">
+      <div class="sec-head">
+        <p class="eyebrow">Contact</p>
+        <h2>Get in touch</h2>
+        <p>Recruiters, researchers, investors and collaborators: email is the fastest way to reach me.</p>
+      </div>
+      <div class="cblock">
+        <div class="crow"><small>Email</small><a class="v" id="email" href="mailto:sammy.poppen@gmail.com">sammy.poppen@gmail.com</a><button class="copy" id="copyBtn" type="button">Copy</button></div>
+        <div class="crow"><small>Phone</small><a class="v" href="tel:+19492394043">(949) 239-4043</a><span></span></div>
+        <div class="crow"><small>Resume</small><a class="v" href="Samuel-Poppen-Resume.pdf" target="_blank" rel="noopener">Samuel Poppen resume (PDF)</a><a class="copy" href="Samuel-Poppen-Resume.pdf" download>Download</a></div>
+        <div class="crow"><small>Based at</small><span class="v">Miami University, Oxford, Ohio</span><span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Samuel Poppen</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<dialog class="dlg" id="dlg" aria-labelledby="dTitle">
+  <div class="dbar">
+    <span id="dIdx">Sheet 1 of 12</span>
+    <div class="acts">
+      <button class="icon-btn" id="dPrev" type="button" aria-label="Previous project"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+      <button class="icon-btn" id="dNext" type="button" aria-label="Next project"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+      <button class="icon-btn" id="dClose" type="button" aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
+    </div>
+  </div>
+  <div class="dbody">
+    <div class="dfig">
+      <div class="sheet"><img id="dImg" src="" alt=""></div>
+      <div class="thumbs" id="dThumbs"></div>
+    </div>
+    <div class="dinfo" id="dInfo"></div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){return document.getElementById(id);};
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- skills (from resume) ---------- */
+  var PROF = [["Technical communication",3],["Computer-aided design",2],["Computer-aided manufacturing",2],["Manufacturing and prototyping",2],["Finite element analysis",2],["Computational fluid dynamics",2]];
+  $("prof").innerHTML = PROF.map(function(r){
+    var lvl = r[1]===3 ? "Advanced" : "Intermediate";
+    return '<div><dt>'+r[0]+'</dt><dd><span class="gauge" aria-hidden="true"><i class="on"></i><i class="on"></i><i'+(r[1]===3?' class="on"':'')+'></i></span>'+lvl+'</dd></div>';
+  }).join("");
+
+  /* ---------- FlexForm: camber-morphing section ---------- */
+  (function(){
+    var shape=$("foilShape"), ref=$("foilRef"), dimP=$("foilDim"), out=$("camberOut"), rng=$("camber");
+    var X=function(x){return 60+x*880;}, Y=function(y){return 112-y*880;};
+    var t=.12, m=.025, p=.4, xh=.62, dmax=.045;
+    function yc(x,d){
+      var y = x<p ? m/(p*p)*(2*p*x-x*x) : m/((1-p)*(1-p))*((1-2*p)+2*p*x-x*x);
+      if(x>xh){var u=(x-xh)/(1-xh); y -= d*dmax*u*u;}
+      return y;
+    }
+    function path(d){
+      var N=96, up=[], lo=[];
+      for(var i=0;i<=N;i++){
+        var x=(1-Math.cos(i/N*Math.PI))/2, a=Math.max(0,x-1e-4), b=Math.min(1,x+1e-4);
+        var th=Math.atan((yc(b,d)-yc(a,d))/(b-a));
+        var yt=5*t*(.2969*Math.sqrt(x)-.126*x-.3516*x*x+.2843*x*x*x-.1036*x*x*x*x);
+        var c=yc(x,d);
+        up.push([x-yt*Math.sin(th), c+yt*Math.cos(th)]);
+        lo.push([x+yt*Math.sin(th), c-yt*Math.cos(th)]);
+      }
+      var pts=up.reverse().concat(lo.slice(1));
+      return "M"+pts.map(function(q){return X(q[0]).toFixed(1)+" "+Y(q[1]).toFixed(1);}).join("L")+"Z";
+    }
+    ref.setAttribute("d", path(0));
+    dimP.setAttribute("d","M"+X(xh)+" 196V222M"+X(1)+" 196V222M"+X(xh)+" 209H"+X(1));
+    function set(d){
+      shape.setAttribute("d", path(d));
+      var ang=Math.atan(2*dmax*d/(1-xh))*180/Math.PI;
+      var txt=(ang>=0?"+":"−")+Math.abs(ang).toFixed(1)+"°";
+      out.textContent=txt; rng.setAttribute("aria-valuetext", txt+" trailing-edge deflection");
+    }
+    var auto=!reduce, visible=true;
+    rng.addEventListener("input",function(){auto=false; set(rng.value/100);});
+    rng.addEventListener("pointerdown",function(){auto=false;});
+    set(rng.value/100);
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(es){visible=es[0].isIntersecting;}).observe($("foil"));
+    }
+    if(auto){
+      var t0=performance.now();
+      (function loop(now){
+        if(!auto) return;
+        if(visible){var d=Math.sin((now-t0)/1500+0.9)*0.8; rng.value=Math.round(d*100); set(d);}
+        requestAnimationFrame(loop);
+      })(t0);
+    }
+  })();
+
+  /* ---------- embedded tool: size the walkthrough to its content ---------- */
+  (function(){
+    var f=$("triFrame");
+    f.addEventListener("load",function(){
+      try{
+        var d=f.contentDocument; if(!d||!d.body) return;
+        var fit=function(){var h=Math.ceil(d.body.getBoundingClientRect().height)+4; if(h>200) f.style.height=h+"px";};
+        fit();
+        var RO=f.contentWindow.ResizeObserver; if(RO) new RO(fit).observe(d.body);
+      }catch(e){}
+    });
+  })();
+
+  /* ---------- robotics archive ---------- */
+  var SYS = {robot:"Full robot", intake:"Intakes", shooter:"Shooters", elevator:"Elevators & arms", chassis:"Chassis & drive"};
+  var SYS1 = {robot:"Full robot", intake:"Intake", shooter:"Shooter", elevator:"Elevator / arm", chassis:"Chassis"};
+  var P = [
+    {id:"coral-intake", t:"Coral Intake Mechanism", date:"Mar 2025", sys:"intake", img:["coral-intake.png"],
+     spec:"Ground intake with three axles on one Kraken X44 and beam-break game-piece sensing.",
+     b:["Pocketed self-reinforced polypropylene plates for a lightweight assembly that resists collisions",
+        "Custom 6061 aluminum guides for consistent game-piece handling",
+        "Industrial-grade beam-break sensors that detect where the game piece is inside the mechanism",
+        "Three axles driven by one Kraken X44 brushless motor",
+        "1½″ compliant wheels keep contact with the game piece at all times",
+        "Intakes game pieces from the ground"]},
+    {id:"pivoting-elevator", t:"Pivoting Elevator Mechanism", date:"Mar 2025", sys:"elevator", img:["pivoting-elevator.png","pivoting-elevator-2.png"],
+     spec:"Three-stage elevator: 2 ft retracted, over 6 ft extended, with a 120° pivot.",
+     b:["Three-stage continuous elevator rigged with Dyneema rope",
+        "Collapses to 2 ft with the pivot lowered and extends past 6 ft",
+        "Pivots 120° on two Kraken X60 motors geared to roughly 135:1",
+        "Custom A-frame, with custom hole patterns along the tubing"]},
+    {id:"swerve-cover", t:"Swerve Module Cover Design", date:"2025", sys:"chassis", img:["swerve-cover.png"],
+     spec:"SLS-printed module cover that press-fits to a 0.003″ tolerance.",
+     note:"Manufactured at a General Atomics government facility.",
+     b:["6.75″ × 6.75″ × 1.35″",
+        "Impact resistant over repeated use and easy to remove for maintenance",
+        "Designed for selective laser sintering (SLS), which uses a laser to fuse powdered material into solid parts",
+        "Extrusions allow a press-fit assembly before bolts are added; a 0.003″ tolerance keeps alignment precise and the fit secure",
+        "The dome has a 4.00″ outer and 3.75″ inner radius, giving the module clearance over uneven terrain up to 1.25″ high while keeping it protected",
+        "Why SLS: FDM parts in PLA and similar plastics aren't strong enough and degrade under repeated use. Onyx prints resist impact better but aren't rigid enough to protect the module"]},
+    {id:"full-2025", t:"Full Mechanism Integration", date:"2024–25", sys:"robot", img:["full-integration-2025.png"],
+     spec:"The complete 2024–25 robot in a single assembly.", b:[]},
+    {id:"intake-redesign", t:"Intake Mechanism Re-design", date:"2024–25", sys:"intake", img:["intake-redesign.png"],
+     spec:"Eight-roller polycarbonate intake built to take hits from robots and field elements.",
+     b:["8 polycarbonate rollers driven by one Kraken XS brushless motor, on 5 mm HTD belts so the pulley teeth don't shred if the mechanism stalls",
+        "¼″ 6061 aluminum sheet side plates handle collisions with other robots",
+        "3⁄16″ 6061 aluminum inner plates withstand the force of the stage when climbing the chain",
+        "1″ × 1″ aluminum tube with a ⅛″ wall at the front absorbs impacts before they reach the rollers",
+        "Four standoffs between the inner and outer plates counter the torque from collisions",
+        "Centering spacers and rollers move the note quickly through the intake, ready for the elevator or the shooter",
+        "3D-printed PLA guide blocks keep the game piece from getting stuck"]},
+    {id:"shooter-redesign", t:"Shooter Mechanism Re-design", date:"2024–25", sys:"shooter", img:["shooter-redesign.png"],
+     spec:"Eight rollers at 6,000+ RPM, aimed by a 15:135 herringbone pivot.",
+     b:["8 polycarbonate shooter rollers; the left and right sets of 4 run independently on two Kraken XS brushless motors",
+        "5 mm HTD belts keep belt and pulley teeth engaged above 6,000 RPM",
+        "Carbon-fiber PLA roller hubs stay robust under the heat of long high-RPM runs",
+        "Pivoted by one Kraken XS driving a 15-tooth herringbone gear on a sliced 135-tooth herringbone gear, for the most accurate shot possible",
+        "Beam-break sensor tells the robot where the game piece is, so it knows when to shoot or reposition",
+        "Pocketed side brackets act as both the shooter pivot and the elevator mounts, keeping the elevator upright",
+        "Two Kraken XS motors geared to 70:1 actuate the elevator",
+        "A further Kraken XS runs three index rollers that feed the note to the shooter or eject it the other way to reposition it"]},
+    {id:"telescopic-elevator", t:"Telescopic Elevator Mechanism", date:"2024–25", sys:"elevator", img:["telescopic-elevator.png"],
+     spec:"One-stage elevator with custom chain-tensioning brackets for extra height.",
+     b:["One-stage elevator driven by two Kraken XS brushless motors",
+        "Custom chain-tensioning brackets replace tensioners on the links, freeing up height when the elevator extends",
+        "6 axles of 45-durometer compliant wheels on one Kraken XS move notes into two of the three scoring locations",
+        "5 mm HTD belts keep torque high without breaking pulley teeth",
+        "4″ PLA static rollers keep the robot stable when climbing along the surface near the chain",
+        "Beam-break sensor detects when a game piece is in view, so the robot knows where it is inside the mechanism"]},
+    {id:"full-2024", t:"Full Mechanism Integration", date:"2023–24", sys:"robot", img:["full-integration-2024.png"],
+     spec:"The complete 2023–24 robot in a single assembly.", b:[]},
+    {id:"frame", t:"Frame-Work", date:"2023–24", sys:"chassis", img:["frame.png"],
+     spec:"25.5″ × 25.5″ swerve chassis with a baseplate cut for every hole and slot.",
+     b:["25.5″ × 25.5″ chassis, 25″ tall",
+        "MK4i L3 swerve modules, adjusted to make the robot one of the quickest and most powerful on the field; each module runs one Kraken XS for drive and one for steering",
+        "3⁄16″ 6061 aluminum baseplate with diamond pocketing at the rear, where the robot already carries most of its weight",
+        "Baseplate manufactured with every hole and slot the build needs: slots to pull the intake chains tight, holes for other mechanisms and the electrical work",
+        "Two NEO Vortex motors near the base, geared about 90:1 so the climber holds the robot on the chain as long as possible",
+        "Tower framework keeps the shooter pivot high for versatility, reaching both the trap and the amp",
+        "Four brackets on the chassis tubing mount the bumpers and absorb their heavy impact loads",
+        "Two more NEO Vortex motors, mounted above the climber motors, drive the arm pivot"]},
+    {id:"intake-2024", t:"Intake Mechanism", date:"2023–24", sys:"intake", img:["intake-2024.png"],
+     spec:"Silicone-sheathed rollers on a NEO Vortex at 9:1, chain-actuated pivot.",
+     b:["Three polycarbonate rollers sheathed in silicone to grip the foam rings",
+        "Driven by a NEO Vortex brushless motor at a 9:1 gear ratio",
+        "3 mm GT2 belts and figure-8 polycord run the rollers",
+        "Actuated by #25H chain on a second NEO Vortex geared to 5:1",
+        "Pivots on two ¼-20 bolts",
+        "Angled to pick up game pieces 2″ tall and 14″ in diameter",
+        "Passive rollers center the game piece for the shooter"]},
+    {id:"shooter-2024", t:"Shooter Mechanism", date:"2023–24", sys:"shooter", img:["shooter-2024.png"],
+     spec:"Four 3″ rollers at 6,000 RPM on a chain-driven pivot.",
+     b:["Four 3″ polycarbonate shooter rollers on two Kraken XS brushless motors at 6,000 RPM",
+        "Horizontal index rollers on a NEO Vortex, linked with figure-8 polycord",
+        "Pivots on a steel axle through 60-tooth sprockets, driven by two Kraken XS motors at the base of the frame with #35H chain",
+        "Roller brackets cut from 6061 aluminum for durability; the shooter frame cut from 5052 aluminum for its ability to bend",
+        "Four passive rollers in the shooter box hold horizontal compression at about 4″ before the shot",
+        "Roller hubs printed in carbon-fiber PLA on a Markforged printer"]},
+    {id:"telescopic-arm", t:"Telescopic Arm", date:"2022–23", sys:"elevator", img:["telescopic-arm.png"],
+     spec:"Sprocket-driven telescoping arm with a wrist and a pneumatic claw.",
+     b:["Extends and retracts with a steel 22-tooth sprocket running in a row of 3⁄16″ holes down the center of the inner tube",
+        "Driven by a 775 brushed motor geared 20:1",
+        "Wrist turned by a CIM motor at about 2:1 through 22- and 48-tooth gears",
+        "Piston-actuated claw opens and closes quickly and firmly",
+        "Urethane claw tips absorb impacts with field elements and other robots"]}
+  ];
+  var byId = {}; P.forEach(function(p){byId[p.id]=p;});
+
+  var grid = $("grid");
+  grid.innerHTML = P.map(function(p){
+    var n = p.b.length;
+    return '<li data-id="'+p.id+'"><article class="card">'+
+      '<div class="sheet card-sheet"><img src="images/'+p.img[0]+'" alt="CAD render of the '+esc(p.t)+' ('+esc(p.date)+')" loading="lazy"></div>'+
+      '<div class="cmeta"><span>'+esc(p.date)+'</span><span>'+(n? n+' specs':'Assembly')+'</span></div>'+
+      '<h3><button type="button" class="open" data-open="'+p.id+'">'+esc(p.t)+'</button></h3>'+
+      '<p>'+esc(p.spec)+'</p></article></li>';
+  }).join("");
+
+  var chips = $("chips"), counts = {};
+  P.forEach(function(p){counts[p.sys]=(counts[p.sys]||0)+1;});
+  chips.innerHTML = '<button class="chip" type="button" data-sys="all" aria-pressed="true">All<span class="n">'+P.length+'</span></button>'+
+    Object.keys(SYS).map(function(k){return '<button class="chip" type="button" data-sys="'+k+'" aria-pressed="false">'+SYS[k]+'<span class="n">'+counts[k]+'</span></button>';}).join("");
+
+  var filter = "all";
+  function matches(p){return filter==="all" || p.sys===filter;}
+  function visibleIds(){return P.filter(matches).map(function(p){return p.id;});}
+  function applyFilter(animate){
+    var shown = 0;
+    [].forEach.call(grid.children,function(li){
+      var ok = matches(byId[li.dataset.id]);
+      li.hidden = !ok; li.classList.remove("enter");
+      if(ok){shown++; if(animate){void li.offsetWidth; li.classList.add("enter");}}
+    });
+    [].forEach.call(chips.children,function(c){c.setAttribute("aria-pressed", c.dataset.sys===filter?"true":"false");});
+    var st = $("fstatus");
+    if(filter==="all"){ st.innerHTML = 'Showing all <b>'+shown+'</b> robot projects'; }
+    else {
+      st.innerHTML = 'Showing <b>'+shown+'</b> of '+P.length+' · '+esc(SYS[filter].toLowerCase())+'<button type="button" class="linkbtn" id="clearF">Show all</button>';
+      $("clearF").onclick = function(){filter="all";applyFilter(true);};
+    }
+  }
+  chips.addEventListener("click",function(e){
+    var c = e.target.closest(".chip"); if(!c) return;
+    filter = c.dataset.sys; applyFilter(true);
+  });
+  applyFilter(false);
+
+  /* ---------- project sheet dialog ---------- */
+  var dlg = $("dlg"), cur = null;
+  function openSheet(id){
+    var p = byId[id]; if(!p) return;
+    cur = id;
+    var list = visibleIds(); if(list.indexOf(id)<0) list = P.map(function(x){return x.id;});
+    var pos = list.indexOf(id);
+    $("dIdx").textContent = "Sheet "+String(pos+1).padStart(2,"0")+" of "+String(list.length).padStart(2,"0")+" · "+p.date+" · "+SYS1[p.sys];
+    var img = $("dImg"); img.src = "images/"+p.img[0]; img.alt = "CAD render of the "+p.t+" ("+p.date+")";
+    var th = $("dThumbs");
+    th.innerHTML = p.img.length>1 ? p.img.map(function(f,i){return '<button type="button" data-src="'+f+'" aria-pressed="'+(i?"false":"true")+'" aria-label="View image '+(i+1)+'"><img src="images/'+f+'" alt=""></button>';}).join("") : "";
+    th.hidden = p.img.length<2;
+    var h = '<h2 id="dTitle">'+esc(p.t)+'</h2><p class="dlede">'+esc(p.spec)+'</p>';
+    if(p.note) h += '<p class="dnote"><b>Manufacturing</b>'+esc(p.note)+'</p>';
+    if(p.b.length) h += '<h3>Specifications</h3><ul class="slist">'+p.b.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
+    if(p.sys==="robot"){
+      var mates = P.filter(function(x){return x.date===p.date && x.id!==p.id;});
+      if(mates.length) h += '<h3>Mechanisms from the same season</h3><div class="tagrow">'+mates.map(function(m){return '<button type="button" class="chip" data-goto="'+m.id+'">'+esc(m.t)+'</button>';}).join("")+'</div>';
+    }
+    $("dInfo").innerHTML = h;
+    $("dInfo").parentNode.scrollTop = 0;
+    if(!dlg.open) dlg.showModal();
+    try{history.replaceState(null,"","#"+id);}catch(e){}
+  }
+  function step(d){
+    if(!cur) return;
+    var list = visibleIds(); if(list.indexOf(cur)<0) list = P.map(function(x){return x.id;});
+    openSheet(list[(list.indexOf(cur)+d+list.length)%list.length]);
+  }
+  grid.addEventListener("click",function(e){var b=e.target.closest("[data-open]"); if(b) openSheet(b.dataset.open);});
+  $("dPrev").onclick = function(){step(-1);};
+  $("dNext").onclick = function(){step(1);};
+  $("dClose").onclick = function(){dlg.close();};
+  dlg.addEventListener("click",function(e){
+    if(e.target===dlg){dlg.close();return;}
+    var g = e.target.closest("[data-goto]"); if(g){openSheet(g.dataset.goto);return;}
+    var s = e.target.closest("[data-src]");
+    if(s){$("dImg").src="images/"+s.dataset.src; [].forEach.call($("dThumbs").children,function(b){b.setAttribute("aria-pressed", b===s?"true":"false");});}
+  });
+  dlg.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"){step(1);} else if(e.key==="ArrowLeft"){step(-1);}
+  });
+  dlg.addEventListener("close",function(){
+    var id = cur; cur = null;
+    try{history.replaceState(null,"",location.pathname+location.search);}catch(e){}
+    var b = grid.querySelector('[data-open="'+id+'"]');
+    if(b && !b.closest("li").hidden) b.focus({preventScroll:true});
+  });
+  function fromHash(){
+    var h = decodeURIComponent(location.hash.slice(1));
+    if(byId[h]) openSheet(h); else if(dlg.open && !h) dlg.close();
+  }
+  window.addEventListener("hashchange",fromHash);
+  fromHash();
+
+  /* ---------- live dimension on the name ---------- */
+  var dim = $("dim"), dimLabel = $("dimLabel"), nameSpans = $("name").children;
+  function measure(){
+    var w = 0; [].forEach.call(nameSpans,function(s){w=Math.max(w,s.getBoundingClientRect().width);});
+    dim.style.setProperty("--w", w+"px");
+    dimLabel.textContent = (w/96).toFixed(3);
+  }
+  var raf = 0;
+  window.addEventListener("resize",function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(measure);});
+  measure();
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){measure(); dim.classList.add("go");});
+  else dim.classList.add("go");
+
+  /* ---------- CAD crosshair + coordinates (inches, origin bottom-left) ---------- */
+  var sheetIn = $("sheetIn"), xh = $("xh"), cx = $("cx"), cy = $("cy");
+  if(matchMedia("(hover: hover) and (pointer: fine)").matches){
+    sheetIn.addEventListener("pointermove",function(e){
+      var r = sheetIn.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      xh.style.setProperty("--x", x+"px"); xh.style.setProperty("--y", y+"px");
+      xh.classList.add("on");
+      cx.textContent = (x/96).toFixed(3); cy.textContent = ((r.height - y)/96).toFixed(3);
+    });
+    sheetIn.addEventListener("pointerleave",function(){xh.classList.remove("on");});
+  }
+
+  /* ---------- aircraft callouts: link balloons and list ---------- */
+  var pins = document.querySelectorAll(".pin"), items = document.querySelectorAll("#callouts li");
+  function lit(k){
+    [].forEach.call(pins,function(p){p.classList.toggle("on", p.dataset.k===k);});
+    [].forEach.call(items,function(li){li.classList.toggle("on", li.dataset.k===k);});
+  }
+  [].forEach.call(items,function(li){
+    li.addEventListener("mouseenter",function(){lit(li.dataset.k);});
+    li.addEventListener("mouseleave",function(){lit(null);});
+  });
+  [].forEach.call(pins,function(p){
+    var b=p.querySelector(".bal");
+    b.addEventListener("mouseenter",function(){lit(p.dataset.k);});
+    b.addEventListener("mouseleave",function(){lit(null);});
+  });
+
+  /* ---------- copy email ---------- */
+  $("copyBtn").addEventListener("click",function(){
+    var btn = this, txt = $("email").textContent;
+    function done(m){btn.textContent=m; setTimeout(function(){btn.textContent="Copy";},1800);}
+    function sel(){var r=document.createRange(); r.selectNodeContents($("email")); var s=getSelection(); s.removeAllRanges(); s.addRange(r); done("Selected");}
+    try{ navigator.clipboard.writeText(txt).then(function(){done("Copied");},sel); }catch(e){ sel(); }
+  });
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement, mq = matchMedia("(prefers-color-scheme: dark)");
+  function eff(){return root.dataset.theme || (mq.matches ? "dark" : "light");}
+  function syncBtn(){
+    var d = eff()==="dark";
+    $("icoMoon").toggleAttribute("hidden", d); $("icoSun").toggleAttribute("hidden", !d);
+    $("themeBtn").setAttribute("aria-label", d ? "Switch to light theme" : "Switch to dark theme");
+    $("themeBtn").title = d ? "Vellum (light)" : "Blueprint (dark)";
+  }
+  $("themeBtn").addEventListener("click",function(){
+    var next = eff()==="dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try{localStorage.setItem("sp-theme", next);}catch(e){}
+    syncBtn();
+  });
+  if(mq.addEventListener) mq.addEventListener("change",syncBtn);
+  syncBtn();
+})();
+</script>
+</body>
+</html>
