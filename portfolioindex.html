@@ -148,6 +148,10 @@ h1.name > span{display:block;width:fit-content}
 /* swarm-rebuild particles: one canvas over the hero sheet */
 .swarm{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .35s;z-index:1}
 .swarm.live{opacity:1;transition:opacity .12s}
+.sw-head{position:relative}
+.sw-head > .swarm{top:-120px;height:calc(100% + 240px)}
+.sw-head .w{transition:opacity .18s}
+.sw-head.sw-wait .w,.sw-head.dissolve .w{opacity:0}
 .js .dim.wait{visibility:hidden}
 .typed .dim.wait{visibility:visible}
 @media (prefers-reduced-motion:reduce){.js .name .ch,.js .dim.wait{visibility:visible}.swarm{display:none}}
@@ -189,7 +193,7 @@ h1.name > span{display:block;width:fit-content}
 /* ---------- shared section pieces ---------- */
 section.band{padding-block:clamp(72px,9vw,120px);scroll-margin-top:58px}
 .sec-head{display:grid;gap:16px;max-width:800px;margin-bottom:44px}
-h2{margin:0;font-family:var(--display);font-stretch:112%;font-weight:760;font-size:clamp(32px,4.3vw,54px);line-height:1.02;letter-spacing:-.012em;text-wrap:balance}
+h2{margin:0;font-family:var(--display);font-stretch:112.5%;font-weight:760;font-size:clamp(32px,4.3vw,54px);line-height:1.02;letter-spacing:-.012em;text-wrap:balance}
 .sec-head p{margin:0;font-size:18px;color:var(--ink-2);max-width:64ch}
 .sec-head p.role-line{font:600 12px/1.4 var(--mono);font-stretch:87.5%;letter-spacing:.07em;text-transform:uppercase;color:var(--ink)}
 .lst-h{margin:0 0 10px;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
@@ -1008,46 +1012,60 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
   window.addEventListener("resize",function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(measure);});
   measure();
 
-  /* ---------- swarm rebuild: particles swarm in and rebuild the name ---------- */
+  /* ---------- swarm rebuild: particles swarm in and rebuild text (the name and every section title) ---------- */
   function revealDim(){
     measure(); dim.classList.remove("wait"); dim.classList.add("go");
     document.documentElement.classList.add("typed");
   }
-  (function(){
-    var sheet=$("sheetIn"), nameEl=$("name"), html=document.documentElement;
-    var fine=matchMedia("(hover: hover) and (pointer: fine)").matches;
-    var cvs=document.createElement("canvas"), ctx=cvs.getContext && cvs.getContext("2d");
-    if(reduce || !ctx){ revealDim(); return; }
-    cvs.className="swarm"; cvs.setAttribute("aria-hidden","true"); sheet.appendChild(cvs);
+  var FINE = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var STRETCH = [[50,"ultra-condensed"],[62.5,"extra-condensed"],[75,"condensed"],[87.5,"semi-condensed"],[100,"normal"],[112.5,"semi-expanded"],[125,"expanded"],[150,"extra-expanded"],[200,"ultra-expanded"]];
+  function stretchKeyword(v){
+    if(v && v.indexOf("%")<0 && /[a-z]/.test(v)) return v;
+    var n=parseFloat(v)||100, best="normal", d=1e9;
+    STRETCH.forEach(function(k){ var e=Math.abs(k[0]-n); if(e<d){d=e; best=k[1];} });
+    return best;
+  }
+  var swarms=[];
+
+  /* o: host (gets the canvas), text (element whose font is used), pieces() -> [{text, rect, block}],
+     orbit [x,y] and ring [min, extra] shape the swarm, swarmMs/staggerMs time the rebuild,
+     hoverEl/hoverBox()/pad enable cursor scatter, onIntroDone runs once the intro has rebuilt */
+  function Swarm(o){
+    var html=document.documentElement, cvs=document.createElement("canvas"), ctx=cvs.getContext && cvs.getContext("2d");
+    if(!ctx) return null;
+    cvs.className="swarm"; cvs.setAttribute("aria-hidden","true"); o.host.appendChild(cvs);
     var dpr=1, W=0, H=0, parts=[], size=2, ink="#122033", red="#C8381D";
-    var mode="idle", t0=0, last=0, acc=0, raf=0, ptr=null, dirty=true, started=false, cx=0, cy=0, R=0;
-    var STEP=1000/60;
+    var mode="idle", t0=0, last=0, acc=0, raf=0, ptr=null, dirty=true, started=false, built=false;
+    var cx=0, cy=0, rx=1, ry=1, rep=70, STEP=1000/60;
 
     function colors(){var cs=getComputedStyle(html); ink=cs.getPropertyValue("--ink").trim()||ink; red=cs.getPropertyValue("--red").trim()||red;}
 
-    /* Rasterize the name exactly where the real text sits, then sample it into target points */
+    /* Rasterize the text exactly where the real text sits, then sample it into target points */
     function targets(){
-      var r=sheet.getBoundingClientRect(); dpr=Math.min(2,window.devicePixelRatio||1);
-      W=r.width; H=r.height; cvs.width=Math.round(W*dpr); cvs.height=Math.round(H*dpr);
-      var off=document.createElement("canvas"); off.width=Math.ceil(W); off.height=Math.ceil(H);
-      var o=off.getContext("2d"), cs=getComputedStyle(nameEl), fs=parseFloat(cs.fontSize);
-      o.font=cs.fontWeight+" "+fs+"px "+cs.fontFamily;
-      if("fontStretch" in o) o.fontStretch="expanded";
-      if("letterSpacing" in o && cs.letterSpacing!=="normal") o.letterSpacing=cs.letterSpacing;
-      o.textBaseline="alphabetic"; o.fillStyle="#000";
-      [].forEach.call(nameEl.children,function(line){
-        var b=line.getBoundingClientRect(), m=o.measureText("H");
-        var asc=m.fontBoundingBoxAscent||fs*.9, desc=m.fontBoundingBoxDescent||fs*.22;
-        o.fillText(line.textContent.toUpperCase(), b.left-r.left, (b.top-r.top)+(b.height-(asc+desc))/2+asc);
+      var r=cvs.getBoundingClientRect(); dpr=Math.min(2,window.devicePixelRatio||1);
+      W=r.width; H=r.height; cvs.width=Math.max(1,Math.round(W*dpr)); cvs.height=Math.max(1,Math.round(H*dpr));
+      var off=document.createElement("canvas"); off.width=Math.max(1,Math.ceil(W)); off.height=Math.max(1,Math.ceil(H));
+      var g=off.getContext("2d"), cs=getComputedStyle(o.text), fs=parseFloat(cs.fontSize), up=cs.textTransform==="uppercase";
+      g.font=cs.fontWeight+" "+fs+"px "+cs.fontFamily;
+      if("fontStretch" in g) g.fontStretch=stretchKeyword(cs.fontStretch);
+      if("letterSpacing" in g && cs.letterSpacing!=="normal") g.letterSpacing=cs.letterSpacing;
+      g.textBaseline="alphabetic"; g.fillStyle="#000";
+      var m=g.measureText("H"), asc=m.fontBoundingBoxAscent||fs*.9, desc=m.fontBoundingBoxDescent||fs*.22;
+      var x0=1e9, y0=1e9, x1=-1e9, y1=-1e9;
+      o.pieces().forEach(function(pc){
+        var bx=pc.rect, top=bx.top-r.top, left=bx.left-r.left;
+        var base = pc.block ? top+(bx.height-(asc+desc))/2+asc : top+asc;
+        g.fillText(up ? pc.text.toUpperCase() : pc.text, left, base);
+        x0=Math.min(x0,left); x1=Math.max(x1,left+bx.width); y0=Math.min(y0,top); y1=Math.max(y1,top+bx.height);
       });
-      var gap=Math.max(3,Math.round(fs/27)), img=o.getImageData(0,0,off.width,off.height).data, pts=[];
+      var gap=Math.max(3,Math.round(fs/27)), img=g.getImageData(0,0,off.width,off.height).data, pts=[];
       for(var y=0;y<off.height;y+=gap) for(var x=0;x<off.width;x+=gap){ if(img[(y*off.width+x)*4+3]>140) pts.push(x,y); }
-      size=Math.max(1.6,gap*.62);
-      var nb=nameEl.getBoundingClientRect(); cx=nb.left-r.left+nb.width/2; cy=nb.top-r.top+nb.height/2; R=Math.max(nb.width,nb.height)*.62;
-      var old=parts; parts=[];
+      size=Math.max(1.6,gap*.62); rep=Math.max(40,fs*.66);
+      cx=(x0+x1)/2; cy=(y0+y1)/2; rx=Math.max(40,(x1-x0)*o.orbit[0]); ry=Math.max(30,(y1-y0)*o.orbit[1]);
+      var old=parts, span=Math.max(1,x1-x0); parts=[];
       for(var i=0;i<pts.length;i+=2){
         var q=old[i/2]||{x:Math.random()*W,y:Math.random()*H,vx:0,vy:0};
-        q.tx=pts[i]; q.ty=pts[i+1]; q.d=(pts[i]-(nb.left-r.left))/Math.max(1,nb.width); q.hot=Math.random()<.1; q.spin=Math.random()<.5?1:-1;
+        q.tx=pts[i]; q.ty=pts[i+1]; q.d=(pts[i]-x0)/span; q.hot=Math.random()<.1; q.spin=Math.random()<.5?1:-1;
         parts.push(q);
       }
       dirty=false;
@@ -1062,15 +1080,15 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
       for(var j=0;j<parts.length;j++){var q=parts[j]; if(q.hot) ctx.fillRect(q.x-h,q.y-h,size,size);}
     }
 
-    /* One fixed physics step: swarm orbit before a particle's build time, a spring to its letter after */
+    /* One fixed physics step: an elliptical swarm before a particle's build time, a spring to its letter after */
     function tick(t){
-      var settled=true, R2=4900;
+      var settled=true, R2=rep*rep, Rm=Math.max(rx,ry);
       for(var i=0;i<parts.length;i++){
-        var p=parts[i], ax=0, ay=0, damp, bt=mode==="intro" ? 620+p.d*720 : -1;
+        var p=parts[i], ax=0, ay=0, damp, bt=mode==="intro" ? o.swarmMs+p.d*o.staggerMs : -1;
         if(t<bt){
-          var dx=p.x-cx, dy=p.y-cy, dist=Math.sqrt(dx*dx+dy*dy)||1, pull=(dist-R)/R;
-          ax=(-dy/dist)*.55*p.spin - (dx/dist)*pull*.9 + (Math.random()-.5)*.7;
-          ay=( dx/dist)*.55*p.spin - (dy/dist)*pull*.9 + (Math.random()-.5)*.7;
+          var u=(p.x-cx)/rx, v=(p.y-cy)/ry, dist=Math.sqrt(u*u+v*v)||1, pull=dist-1;
+          ax=((-v/dist)*.55*p.spin - (u/dist)*pull*.9)*(rx/Rm) + (Math.random()-.5)*.7;
+          ay=(( u/dist)*.55*p.spin - (v/dist)*pull*.9)*(ry/Rm) + (Math.random()-.5)*.7;
           damp=.93; settled=false;
         } else {
           var k=mode==="intro" ? Math.min(1,(t-bt)/420)*.075 : .075;
@@ -1091,7 +1109,7 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
       var settled=false, n=0;
       while(acc>=STEP && n<5){ settled=tick(now-t0); acc-=STEP; n++; }
       draw();
-      var overdue = mode==="intro" && now-t0>4200;
+      var overdue = mode==="intro" && now-t0>o.overdue;
       if((settled && !ptr) || overdue){ finish(overdue); return; }
       raf=requestAnimationFrame(frame);
     }
@@ -1099,45 +1117,103 @@ dialog.dlg::backdrop{background:rgba(8,18,30,.6)}
 
     function finish(snap){
       cancelAnimationFrame(raf);
-      if(snap){ parts.forEach(function(p){p.x=p.tx;p.y=p.ty;p.vx=p.vy=0;}); draw(); }
-      if(mode==="intro") revealDim();
-      nameEl.classList.remove("dissolve");
+      if(snap && parts.length){ parts.forEach(function(p){p.x=p.tx;p.y=p.ty;p.vx=p.vy=0;}); draw(); }
+      var wasIntro = mode==="intro";
+      o.text.classList.remove("dissolve");
       cvs.classList.remove("live");
-      mode="idle";
+      mode="idle"; built=true;
+      if(wasIntro && o.onIntroDone) o.onIntroDone();
     }
 
     function intro(){
       if(started) return; started=true;
-      targets(); colors();
-      parts.forEach(function(p){
-        var a=Math.random()*Math.PI*2, rad=R*(1.15+Math.random()*1.1);
-        p.x=cx+Math.cos(a)*rad; p.y=cy+Math.sin(a)*rad*.7; p.vx=0; p.vy=0;
-      });
-      draw(); cvs.classList.add("live");
-      mode="intro"; t0=performance.now(); run();
+      try{
+        targets(); colors();
+        var lo=o.ring[0], extra=o.ring[1];
+        parts.forEach(function(p){
+          var ang=Math.random()*Math.PI*2, rad=lo+Math.random()*extra;
+          p.x=cx+Math.cos(ang)*rx*rad; p.y=cy+Math.sin(ang)*ry*rad; p.vx=0; p.vy=0;
+        });
+        draw(); cvs.classList.add("live");
+        mode="intro"; t0=performance.now(); run();
+      }catch(e){ mode="intro"; finish(false); }
     }
 
-    if(fine){
-      sheet.addEventListener("pointermove",function(e){
-        var nb=nameEl.getBoundingClientRect(), pad=36;
+    if(FINE && o.hoverEl){
+      o.hoverEl.addEventListener("pointermove",function(e){
+        var nb=o.hoverBox(), pad=o.pad||30;
         var inside=e.clientX>nb.left-pad && e.clientX<nb.right+pad && e.clientY>nb.top-pad && e.clientY<nb.bottom+pad;
         if(!inside){ ptr=null; return; }
-        var r=sheet.getBoundingClientRect(); ptr={x:e.clientX-r.left, y:e.clientY-r.top};
-        if(mode==="idle" && html.classList.contains("typed")){
-          if(dirty) targets(); colors();
-          parts.forEach(function(p){p.x=p.tx;p.y=p.ty;p.vx=p.vy=0;});
-          draw(); cvs.classList.add("live"); nameEl.classList.add("dissolve");
-          mode="hover"; t0=performance.now(); run();
+        var r=cvs.getBoundingClientRect(); ptr={x:e.clientX-r.left, y:e.clientY-r.top};
+        if(mode==="idle" && built){
+          try{
+            if(dirty) targets(); colors();
+            parts.forEach(function(p){p.x=p.tx;p.y=p.ty;p.vx=p.vy=0;});
+            draw(); cvs.classList.add("live"); o.text.classList.add("dissolve");
+            mode="hover"; t0=performance.now(); run();
+          }catch(err){ finish(false); }
         }
       });
-      sheet.addEventListener("pointerleave",function(){ptr=null;});
+      o.hoverEl.addEventListener("pointerleave",function(){ptr=null;});
     }
-    window.addEventListener("resize",function(){ dirty=true; if(mode!=="idle"){ targets(); finish(true); } });
-    $("themeBtn").addEventListener("click",function(){ setTimeout(colors,0); });
 
-    if(document.fonts && document.fonts.ready) document.fonts.ready.then(intro);
-    setTimeout(intro, 1200);
+    return {
+      intro: intro,
+      colors: colors,
+      resize: function(){ dirty=true; if(mode!=="idle"){ try{ targets(); }catch(e){} finish(true); } }
+    };
+  }
+
+  (function(){
+    var nameEl=$("name"), sheet=$("sheetIn");
+    if(reduce){ revealDim(); return; }
+
+    /* the name, on load */
+    var hero=Swarm({
+      host:sheet, text:nameEl, orbit:[.62,1.2], ring:[1.15,1.1], swarmMs:620, staggerMs:720, overdue:4200,
+      pieces:function(){ return [].map.call(nameEl.children,function(l){ return {text:l.textContent, rect:l.getBoundingClientRect(), block:true}; }); },
+      hoverEl:sheet, hoverBox:function(){ return nameEl.getBoundingClientRect(); }, pad:36,
+      onIntroDone:revealDim
+    });
+    if(!hero){ revealDim(); }
+    else {
+      swarms.push(hero);
+      if(document.fonts && document.fonts.ready) document.fonts.ready.then(hero.intro);
+      setTimeout(hero.intro, 1200);
+    }
+
+    /* every section title, the first time it scrolls into view */
+    var heads=[].slice.call(document.querySelectorAll(".band .sec-head h2"));
+    if(!("IntersectionObserver" in window) || !heads.length) return;
+    var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        io.unobserve(en.target);
+        var sw=en.target.__swarm; if(sw) fontsReady.then(sw.intro);
+      });
+    },{threshold:.6});
+    heads.forEach(function(h){
+      var words=h.textContent.trim().split(/\s+/);
+      h.innerHTML=words.map(function(w){ return '<span class="w">'+esc(w)+'</span>'; }).join(" ");
+      h.classList.add("sw-head","sw-wait");
+      var wordBox=function(){
+        var ws=h.querySelectorAll(".w"), a=ws[0].getBoundingClientRect(), box={left:a.left,top:a.top,right:a.right,bottom:a.bottom};
+        [].forEach.call(ws,function(w){ var b=w.getBoundingClientRect(); box.left=Math.min(box.left,b.left); box.top=Math.min(box.top,b.top); box.right=Math.max(box.right,b.right); box.bottom=Math.max(box.bottom,b.bottom); });
+        return box;
+      };
+      var sw=Swarm({
+        host:h, text:h, orbit:[.6,1.6], ring:[1.1,.8], swarmMs:320, staggerMs:520, overdue:3200,
+        pieces:function(){ return [].map.call(h.querySelectorAll(".w"),function(w){ return {text:w.textContent, rect:w.getBoundingClientRect(), block:false}; }); },
+        hoverEl:h, hoverBox:wordBox, pad:24,
+        onIntroDone:function(){ h.classList.remove("sw-wait"); }
+      });
+      if(!sw){ h.classList.remove("sw-wait"); return; }
+      h.__swarm=sw; swarms.push(sw); io.observe(h);
+    });
   })();
+  window.addEventListener("resize",function(){ swarms.forEach(function(s){ s.resize(); }); });
+  $("themeBtn").addEventListener("click",function(){ setTimeout(function(){ swarms.forEach(function(s){ s.colors(); }); },0); });
 
   /* ---------- CAD crosshair + coordinates (inches, origin bottom-left) ---------- */
   var sheetIn = $("sheetIn"), xh = $("xh"), cx = $("cx"), cy = $("cy");
